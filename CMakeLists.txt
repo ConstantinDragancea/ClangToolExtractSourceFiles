@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 # Sets ${PROJECT_NAME}
-project(ExtractSource)
+project(extract-source-files)
 
 # ---- Compiler ----
 # C++17
