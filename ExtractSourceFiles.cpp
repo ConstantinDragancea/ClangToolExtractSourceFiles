@@ -45,7 +45,9 @@ int main(int argc, const char **argv) {
     // Iterate over the jobs in the compilation
     for (const auto &Job : C->getJobs()) {
         for (const auto &Input : Job.getInputInfos()) {
-            llvm::outs() << "Source file: " << Input.getAsString() << "\n";
+            // llvm::outs() << "Source file: " << Input.getAsString() << "\n";
+            std::string FilenameWithQuotes = Input.getAsString();
+            llvm::outs() << FilenameWithQuotes.substr(1, FilenameWithQuotes.size() - 2) << "\n";
         }
     }
 
