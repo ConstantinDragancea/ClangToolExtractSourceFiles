@@ -13,6 +13,7 @@
 #include "llvm/ADT/ArrayRef.h"
 
 #include <memory>
+#include <filesystem>
 
 using namespace clang;
 using namespace clang::driver;
@@ -36,7 +37,8 @@ int main(int argc, const char **argv) {
     Driver TheDriver(argv[0], llvm::sys::getDefaultTargetTriple(), *diags);
 
     // Parse the command line arguments
-    std::vector<const char *> Args(argv + 1, argv + argc);
+    std::filesystem::path WorkingDirectory = argv[1];
+    std::vector<const char *> Args(argv + 2, argv + argc);
     // We don't actually care if the command
     Args.push_back("-fsyntax-only");
 
@@ -47,7 +49,8 @@ int main(int argc, const char **argv) {
         for (const auto &Input : Job.getInputInfos()) {
             // llvm::outs() << "Source file: " << Input.getAsString() << "\n";
             std::string FilenameWithQuotes = Input.getAsString();
-            llvm::outs() << FilenameWithQuotes.substr(1, FilenameWithQuotes.size() - 2) << "\n";
+            std::filesystem::path NotNormalPath = WorkingDirectory / FilenameWithQuotes.substr(1, FilenameWithQuotes.size() - 2);
+            llvm::outs() << std::filesystem::weakly_canonical(NotNormalPath) << "\n";
         }
     }
 
